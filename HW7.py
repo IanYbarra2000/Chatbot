@@ -1,12 +1,53 @@
 import pickle
 import nltk
+from nltk.util import ngrams
 import random
 from nltk import word_tokenize
 from nltk import WordNetLemmatizer
 #from chatterbot import ChatBot
 #from chatterbot.conversation import Statement
 #from chatterbot.trainers import ListTrainer
-knowledge = pickle.load(open('knowledgeBase.p','rb'))
+def matchPhrase(tkn):
+    for k in knowledge.keys():
+        t = nltk.word_tokenize(k.lower())
+        for kt in t:
+            if(kt in tkn):
+                return k
+    bigram = list(ngrams(tkn,2))
+    for k in knowledge.keys():
+        t = nltk.word_tokenize(k.lower())
+        kbigram = list(ngrams(t,2))
+        for kb in kbigram:
+            if(kb in bigram):
+                return k
+    return None
+
+def updateHistory(kToUpdate):
+    try:
+        callNum=0
+        if(kToUpdate in UserInfo['history'].keys()):
+            callNum = UserInfo['history'][kToUpdate]+1
+            UserInfo['history'][kToUpdate] = callNum
+
+            if(callNum>len(knowledge[kToUpdate])-1): #If a specific keyword has been called more times than the number responses available it cycles back to the beginning while still maintaining a record of the count
+                callNum=callNum%len(knowledge[kToUpdate])
+            print("Brando: You've already asked about",kToUpdate+". I will tell you something else about it if I can.")
+            print("Brando:",knowledge[kToUpdate][0][callNum])
+        else:
+            UserInfo['history'][kToUpdate]=0
+            print("Brando:",knowledge[kToUpdate][0][0])
+    except Exception as e:
+         #stores history as a dictionary in with the keyword as the key and the number of times it has been asked about as the value
+        UserInfo['history'] = dict()
+        UserInfo['history'][kToUpdate] = 0
+
+        print("Brando:",knowledge[kToUpdate][0][0])
+    pickle.dump(UserInfo,open('Users/'+name+'.p','wb'))
+
+
+
+
+knowledge = pickle.load(open('t_knowledgeBase.p','rb'))
 if(False):
 
     bot = ChatBot('Norman')
@@ -62,27 +103,12 @@ while(True):
             keywords.append(x)
     if(len(keywords)!=0):
         for x in keywords:
-
-
-            try:
-                callNum=0
-                if(x in UserInfo['history'].keys()):
-                    callNum = UserInfo['history'][x]+1
-                    UserInfo['history'][x] = callNum
-
-                    if(callNum>len(knowledge[x])-1): #If a specific keyword has been called more times than the number responses available it cycles back to the beginning while still maintaining a record of the count
-                            callNum=callNum%len(knowledge[x])
-                    print("Brando: You've already asked about",x+". I will tell you something else about it if I can.")
-                    print("Brando:",knowledge[x][callNum])
-                else:
-                    UserInfo['history'][x]=0
-                    print("Brando:",knowledge[x][0])
-            except:
-                #stores history as a dictionary in with the keyword as the key and the number of times it has been asked about as the value
-                UserInfo['history'] = dict()
-                UserInfo['history'][x] = 0
-                print(UserInfo['history'])
-                print("Brando:",knowledge[x][0])
-            pickle.dump(UserInfo,open('Users/'+name+'.p','wb'))
+            updateHistory(x)
     else:
-        print("Brando:","I don't know what you mean")
+        key = matchPhrase(tokens)
+        if(key is not None):
+            updateHistory(key)
+        else:
+            print("Brando:","I don't know what you mean")
+
+
