@@ -62,6 +62,27 @@ while(True):
             keywords.append(x)
     if(len(keywords)!=0):
         for x in keywords:
-            print("Brando:",knowledge[x][random.randint(0,len(knowledge[x])-1)])
+
+
+            try:
+                callNum=0
+                if(x in UserInfo['history'].keys()):
+                    callNum = UserInfo['history'][x]+1
+                    UserInfo['history'][x] = callNum
+
+                    if(callNum>len(knowledge[x])-1): #If a specific keyword has been called more times than the number responses available it cycles back to the beginning while still maintaining a record of the count
+                            callNum=callNum%len(knowledge[x])
+                    print("Brando: You've already asked about",x+". I will tell you something else about it if I can.")
+                    print("Brando:",knowledge[x][callNum])
+                else:
+                    UserInfo['history'][x]=0
+                    print("Brando:",knowledge[x][0])
+            except:
+                #stores history as a dictionary in with the keyword as the key and the number of times it has been asked about as the value
+                UserInfo['history'] = dict()
+                UserInfo['history'][x] = 0
+                print(UserInfo['history'])
+                print("Brando:",knowledge[x][0])
+            pickle.dump(UserInfo,open('Users/'+name+'.p','wb'))
     else:
         print("Brando:","I don't know what you mean")
