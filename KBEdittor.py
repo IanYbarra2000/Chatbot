@@ -114,21 +114,30 @@ def scrape_links(url,type):
                 if(text and text[1]):
                     cult_knowledge[text[0]]=text[1]
             
+if(False):
+    scrape_links('https://coppermind.net/wiki/Category:Characters','char')
+    scrape_links('https://coppermind.net/wiki/Category:Locations','loc')
+    scrape_links('https://coppermind.net/wiki/Category:Magic','mag')
+    scrape_links('https://coppermind.net/wiki/Category:Lifeforms','life')
+    scrape_links('https://coppermind.net/wiki/Category:Magical_entities','life')
+    scrape_links('https://coppermind.net/wiki/Category:Objects_and_Materials','obj')
+    scrape_links('https://coppermind.net/wiki/Category:Events_and_Eras','era')
+    scrape_links('https://coppermind.net/wiki/Category:Culture','cult')
+    pickle.dump(char_knowledge,open('knowledge/char_knowledgeBase.p','wb'))
+    pickle.dump(loc_knowledge,open('knowledge/loc_knowledgeBase.p','wb'))
+    pickle.dump(mag_knowledge,open('knowledge/mag_knowledgeBase.p','wb'))
+    pickle.dump(life_knowledge,open('knowledge/life_knowledgeBase.p','wb'))
+    pickle.dump(obj_knowledge,open('knowledge/obj_knowledgeBase.p','wb'))
+    pickle.dump(era_knowledge,open('knowledge/era_knowledgeBase.p','wb'))
+    pickle.dump(cult_knowledge,open('knowledge/cult_knowledgeBase.p','wb'))
 
-scrape_links('https://coppermind.net/wiki/Category:Characters','char')
-scrape_links('https://coppermind.net/wiki/Category:Locations','loc')
-scrape_links('https://coppermind.net/wiki/Category:Magic','mag')
-scrape_links('https://coppermind.net/wiki/Category:Lifeforms','life')
-scrape_links('https://coppermind.net/wiki/Category:Magical_entities','life')
-scrape_links('https://coppermind.net/wiki/Category:Objects_and_Materials','obj')
-scrape_links('https://coppermind.net/wiki/Category:Events_and_Eras','era')
-scrape_links('https://coppermind.net/wiki/Category:Culture','cult')
-pickle.dump(char_knowledge,open('knowledge/char_knowledgeBase.p','wb'))
-pickle.dump(loc_knowledge,open('knowledge/loc_knowledgeBase.p','wb'))
-pickle.dump(mag_knowledge,open('knowledge/mag_knowledgeBase.p','wb'))
-pickle.dump(life_knowledge,open('knowledge/life_knowledgeBase.p','wb'))
-pickle.dump(obj_knowledge,open('knowledge/obj_knowledgeBase.p','wb'))
-pickle.dump(era_knowledge,open('knowledge/era_knowledgeBase.p','wb'))
-pickle.dump(cult_knowledge,open('knowledge/cult_knowledgeBase.p','wb'))
+obj_knowledge = pickle.load(open('knowledge/obj_knowledgeBase.p','rb'))
+alph = 'abcdefghijklmnopqrstuvwxyz'
+alph = [char for char in alph]
+for a in alph:
+    for x in obj_knowledge.keys():
+        #print(x[0],a)
+        if(x[0].lower()==a):
+            print(x+":",obj_knowledge[x])
+            break
 
-#print(era_knowledge['Battle of Alta'])

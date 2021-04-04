@@ -115,7 +115,8 @@ def yesOrNo(txt):
     Returns:
         boolean: returns true if answer is determined to be yes and no if not
     """
-    proc = nltk.word_tokenize(txt)
+
+    proc = nltk.word_tokenize(txt.lower())
     y = ['yes','sure','okay','yeah','absolutely','indeed','ya','yup','yep','totally','alright','certainly','definitely','gladly','indubitably','undoubtedly']
     for w in proc:
         if(w in y):
