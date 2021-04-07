@@ -36,10 +36,11 @@ def searchOnMiss(tkn):
         if(cosine[x]>max and x not in UserInfo['history'].keys()):
             max=cosine[x]
             maxI=x
-    print("I'm not exactly sure what you mean. Were you refering to",maxI+"?")
-    YoN = input(name+": ")
-    if(yesOrNo(YoN)):
-        updateHistory(maxI)
+    if(maxI):
+        print("I'm not exactly sure what you mean. Were you refering to",maxI+"?")
+        YoN = input(name+": ")
+        if(yesOrNo(YoN)):
+            updateHistory(maxI)
     
     
 
@@ -234,7 +235,6 @@ def topicQuestion(tg):
     lems = processRequest(req)
     tok = lems[1]
     lems = lems[0]
-    #print(tok,lems)
     for x in lems:
         if(x =='exit' or x=='stop'):
             end()
@@ -244,34 +244,17 @@ def topicQuestion(tg):
         for x in keywords:
             updateHistory(x)
     else:
-        #print('match Phrase')
         key = matchPhrase(tok)
         if(key is not None):
             updateHistory(key)
         else:
             searchOnMiss(tok)
-            #print("Brando:","I don't know what you mean")
     print("Brando: Would you like to ask another question about a",topic+"?")
     YoN = input(name+": ")
     if(yesOrNo(YoN)):
         topicQuestion(tg)
 
 knowledge = dict()
-#char_knowledge=pickle.load(open('char_knowledgeBase.p','rb'))
-#loc_knowledge=pickle.load(open('loc_knowledgeBase.p','rb'))
-#mag_knowledge=pickle.load(open('mag_knowledgeBase.p','rb'))
-#life_knowledge=pickle.load(open('life_knowledgeBase.p','rb'))
-#obj_knowledge=pickle.load(open('obj_knowledgeBase.p','rb'))
-#era_knowledge=pickle.load(open('era_knowledgeBase.p','rb'))
-#print(era_knowledge['Battle of Alta'])
-#cult_knowledge=pickle.load(open('cult_knowledgeBase.p','rb'))
-#TO DO:
-#-Store more personal information than name
-#-Think of how to incorporate that info into responses
-#-Incorporate more of the NLP techniques learned in class
-#-expand knowledge base by a lot
-#-Probably want to polish the word detection stuff but not quite sure how yet
-
 UserInfo = dict()
 print("Brando: What is your name?")
 name = input("You: ")

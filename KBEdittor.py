@@ -37,7 +37,6 @@ def scrapeLoc(url):
         
         
         if(x.get_text()[0]=='“' or reg.search(x.get_text())):
-            #print(x.get_text())
             continue
         
         text +=x.get_text()
@@ -45,7 +44,6 @@ def scrapeLoc(url):
 
     text = re.sub(r'[\d\[\]]+', '', text)
     sents = nltk.sent_tokenize(text)
-    #print(sents)
     return (title,sents)
 
 def scrapeChar(url):
@@ -81,7 +79,6 @@ def scrape_links(url,type):
     strained = SoupStrainer(id="mw-pages")
     s = BeautifulSoup(pg.content,'html.parser',parse_only=strained)
     for l in s.find_all('a'):
-        #print(l.get('href'))
         if(l.get('href')!='None'):
             print("finished",l.get('href'))
             link = "https://coppermind.net"+l.get('href')
@@ -114,30 +111,21 @@ def scrape_links(url,type):
                 if(text and text[1]):
                     cult_knowledge[text[0]]=text[1]
             
-if(False):
-    scrape_links('https://coppermind.net/wiki/Category:Characters','char')
-    scrape_links('https://coppermind.net/wiki/Category:Locations','loc')
-    scrape_links('https://coppermind.net/wiki/Category:Magic','mag')
-    scrape_links('https://coppermind.net/wiki/Category:Lifeforms','life')
-    scrape_links('https://coppermind.net/wiki/Category:Magical_entities','life')
-    scrape_links('https://coppermind.net/wiki/Category:Objects_and_Materials','obj')
-    scrape_links('https://coppermind.net/wiki/Category:Events_and_Eras','era')
-    scrape_links('https://coppermind.net/wiki/Category:Culture','cult')
-    pickle.dump(char_knowledge,open('knowledge/char_knowledgeBase.p','wb'))
-    pickle.dump(loc_knowledge,open('knowledge/loc_knowledgeBase.p','wb'))
-    pickle.dump(mag_knowledge,open('knowledge/mag_knowledgeBase.p','wb'))
-    pickle.dump(life_knowledge,open('knowledge/life_knowledgeBase.p','wb'))
-    pickle.dump(obj_knowledge,open('knowledge/obj_knowledgeBase.p','wb'))
-    pickle.dump(era_knowledge,open('knowledge/era_knowledgeBase.p','wb'))
-    pickle.dump(cult_knowledge,open('knowledge/cult_knowledgeBase.p','wb'))
 
-obj_knowledge = pickle.load(open('knowledge/obj_knowledgeBase.p','rb'))
-alph = 'abcdefghijklmnopqrstuvwxyz'
-alph = [char for char in alph]
-for a in alph:
-    for x in obj_knowledge.keys():
-        #print(x[0],a)
-        if(x[0].lower()==a):
-            print(x+":",obj_knowledge[x])
-            break
+scrape_links('https://coppermind.net/wiki/Category:Characters','char')
+scrape_links('https://coppermind.net/wiki/Category:Locations','loc')
+scrape_links('https://coppermind.net/wiki/Category:Magic','mag')
+scrape_links('https://coppermind.net/wiki/Category:Lifeforms','life')
+scrape_links('https://coppermind.net/wiki/Category:Magical_entities','life')
+scrape_links('https://coppermind.net/wiki/Category:Objects_and_Materials','obj')
+scrape_links('https://coppermind.net/wiki/Category:Events_and_Eras','era')
+scrape_links('https://coppermind.net/wiki/Category:Culture','cult')
+pickle.dump(char_knowledge,open('knowledge/char_knowledgeBase.p','wb'))
+pickle.dump(loc_knowledge,open('knowledge/loc_knowledgeBase.p','wb'))
+pickle.dump(mag_knowledge,open('knowledge/mag_knowledgeBase.p','wb'))
+pickle.dump(life_knowledge,open('knowledge/life_knowledgeBase.p','wb'))
+pickle.dump(obj_knowledge,open('knowledge/obj_knowledgeBase.p','wb'))
+pickle.dump(era_knowledge,open('knowledge/era_knowledgeBase.p','wb'))
+pickle.dump(cult_knowledge,open('knowledge/cult_knowledgeBase.p','wb'))
+
 
